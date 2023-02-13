@@ -45,10 +45,29 @@ def update_config_file():
 		f.write(active_profile + "\n" + custom_path)
 
 
+def get_stash_items(content):
+	stash_items = []
+	for stash in ["", "2", "3", "4", "5", "6"]:
+		stash_list = []
+		for item_num in range(1, 7):
+			try:
+				stash_item = re.search(f'call Preload\( "Stash{stash} Item {item_num}: (.*?)" \)', content).group(1).replace("|r", "")
+				if stash_item[:2].lower() == "|c":
+					stash_item = stash_item[10:]
+				if stash_item == " ":
+					continue
+				stash_list.append(stash_item)
+			except:
+				print(f"Could not parse: Stash{stash} Item{item_num}")
+		stash_items.append(stash_list)
+	return stash_items
+
+
 def get_class_information(c_file):
 	gold = 0
 	shards = 0
 	items = []
+	stash_items = []
 	load_code = ""
 	try:
 		with open(c_file, "r") as f:
@@ -61,9 +80,10 @@ def get_class_information(c_file):
 				if item[:3].lower() == "|cf":
 					item = item[10:]
 				items.append(item)
+			stash_items = get_stash_items(content)
 	except:
 		print(f"Could not parse: {c_file}")
-	return list((gold, shards, load_code, items))
+	return list((gold, shards, load_code, items, stash_items))
 
 
 def get_class_names():
@@ -107,10 +127,15 @@ def update_information():
 		if evo_class['class_name'] == selected_class:
 			index = x
 	textbox.insert(INSERT, "Gold: " + class_list[index]['gold'] + "\n")
-	textbox.insert(INSERT, "Power Shards: " + class_list[index]['shards'] + "\n\n")
+	textbox.insert(INSERT, "Power Shards: " + class_list[index]['shards'] + "\n")
+	textbox.insert(INSERT, "\nCode: " + class_list[index]['code'] + "\n\n")
 	for x in range(0, 6):
 		textbox.insert(INSERT, f"Item {x+1}: " + class_list[index]['items'][x] + "\n")
-	textbox.insert(INSERT, "\nCode: " + class_list[index]['code'])
+	textbox.insert(INSERT, "\n")
+	for stash in range(0, 6):
+		text = ", ".join(class_list[index]['stash_items'][stash])
+		if text != "":
+			textbox.insert(INSERT, f"Stash{stash+1}: {text}\n\n")
 	textbox.config(state=DISABLED)
 
 
@@ -180,7 +205,7 @@ def display_changelog():
 	changelog_textbox = Text(changelog_window)
 	changelog_textbox.place(x=0, y=0)
 	changelog_textbox.insert("end", "v1.1\n")
-	changelog_textbox.insert("end", "- Added Sky Sorceress and Lightbinder to the\nfilters.\n- Fixed a bug that could not read the file when\nthere was another directory\n\n")
+	changelog_textbox.insert("end", "- Added Sky Sorceress and Lightbinder to the\nfilters.\n- Added stash items\n- Fixed a bug that could not read the file when\nthere was another directory\n\n")
 	changelog_textbox.insert("end", "v1.0\n")
 	changelog_textbox.insert("end", "- Added refresh feature to update the information\n- Added change path feature\n- Added support for multiple battlenet accounts")
 	changelog_textbox.config(state=DISABLED)
@@ -303,7 +328,7 @@ def main():
 			for evo_class in class_name_list:
 				level, file = get_class_level_and_file(evo_class)
 				class_information = get_class_information(file)
-				class_list.append(dict(class_name=evo_class, level=level, gold=class_information[0], shards=class_information[1], code=class_information[2], items=class_information[3]))
+				class_list.append(dict(class_name=evo_class, level=level, gold=class_information[0], shards=class_information[1], code=class_information[2], items=class_information[3], stash_items=class_information[4]))
 	update_gui()
 
 
