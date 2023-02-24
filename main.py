@@ -302,10 +302,19 @@ def refresh():
 	textbox.config(state=DISABLED)
 
 
-# Button
-button = Button(root, width=15, height=1, bd=1, text="Refresh", command=refresh)
-button.place(x=408, y=9)
+def copycode():
+	code = re.search('Code:\ (.*?)\n', textbox.get(1.0, END)).group(1)
+	textbox.clipboard_clear()
+	textbox.clipboard_append('l- '+ code)
 
+
+# Button refresh
+button = Button(root, width=8, height=1, bd=1, text="Refresh", command=refresh)
+button.place(x=475, y=9)
+
+# Button copy code
+button2 = Button(root, width=8, height=1, bd=1, text="Copy code", command=copycode)
+button2.place(x=400, y=9)
 
 # main
 def main():
