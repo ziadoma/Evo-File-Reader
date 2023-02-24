@@ -303,9 +303,10 @@ def refresh():
 
 
 def copycode():
-	code = re.search('Code:\ (.*?)\n', textbox.get(1.0, END)).group(1)
-	textbox.clipboard_clear()
-	textbox.clipboard_append('l- '+ code)
+	code = re.search('Code:\ (.*?)\n', textbox.get(1.0, END))
+	if code is not None:
+		textbox.clipboard_clear()
+		textbox.clipboard_append('l- '+ code.group(1))
 
 
 # Button refresh
