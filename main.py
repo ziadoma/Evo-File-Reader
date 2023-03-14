@@ -2,6 +2,7 @@ import os, re
 from tkinter import *
 from tkinter import filedialog
 from tkinter import ttk
+import pyautogui
 
 VERSION = "v1.1"
 ICON = "load.ico"
@@ -302,11 +303,41 @@ def refresh():
 	textbox.config(state=DISABLED)
 
 
+def paste_code():
+	war3 = pyautogui.getWindowsWithTitle('Warcraft III')[0]
+	war3.activate()
+	pyautogui.sleep(0.5)
+	pyautogui.press('enter')
+	pyautogui.sleep(0.3)
+	pyautogui.hotkey('ctrl', 'v')
+	pyautogui.sleep(0.3)
+	pyautogui.press('enter')
+
+
+
 def copycode():
 	code = re.search('Code:\ (.*?)\n', textbox.get(1.0, END))
 	if code is not None:
+		if (len(code.group(1)) >= 124):
+			bcode = code.group(1)
+			lc = bcode[0:124]
+			le = bcode[124:]
+			textbox.clipboard_clear()
+			textbox.clipboard_append('-lc')
+			paste_code()
+			textbox.clipboard_clear()
+			textbox.clipboard_append(lc)
+			paste_code()
+			textbox.clipboard_clear()
+			textbox.clipboard_append(le)
+			paste_code()
+			textbox.clipboard_clear()
+			textbox.clipboard_append('-le')
+			paste_code()
 		textbox.clipboard_clear()
-		textbox.clipboard_append('l- '+ code.group(1))
+		textbox.clipboard_append('-l '+ code.group(1))
+		paste_code()
+	
 
 
 # Button refresh
