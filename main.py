@@ -3,20 +3,26 @@ from tkinter import *
 from tkinter import filedialog
 from tkinter import ttk
 import pyautogui
+import keyboard
 
-VERSION = "v1.1"
+VERSION = "v1.2"
 ICON = "load.ico"
 if not os.path.isfile(ICON):
 	ICON = ""
 USER = os.getlogin()
-MAX_TIER = ["Annihilator", "Arch Sage", "Avenger", "Champion", "Dark Arch Templar", "Devil Incarnate", "Grand Inquisitor", "Grand Templar", "Hierophant", "Jounin", "Lightbinder", "Light Caster", "Master Stalker", "Monster Hunter", "Mystic", "Phantom Assassin", "Professional Witcher", "Prophetess", "Rune Master", "Sky Caster", "Sky Sorceress", "Sniper", "Summoner", "White Wizard"]
+MAX_TIER = ["Annihilator", "Arch Sage", "Avenger", "Champion", "Dark Arch Templar", "Devil Incarnate",
+			"Grand Inquisitor", "Grand Templar", "Hierophant", "Jounin", "Lightbinder", "Light Caster",
+			"Master Stalker", "Monster Hunter", "Mystic", "Phantom Assassin", "Professional Witcher", "Prophetess",
+			"Rune Master", "Sky Caster", "Sky Sorceress", "Sniper", "Stargazer", "Summoner", "White Wizard"]
 DEFAULT_PATH = f"C:\\Users\\{USER}\\Documents\\Warcraft III"
+WAIT_TIMER = 0
 
 active_profile = ""
 profiles = []
 custom_path = ""
 selected_class = ""
 class_list = []
+selected_code = ""
 
 
 def atoi(text):
@@ -52,7 +58,8 @@ def get_stash_items(content):
 		stash_list = []
 		for item_num in range(1, 7):
 			try:
-				stash_item = re.search(f'call Preload\( "Stash{stash} Item {item_num}: (.*?)" \)', content).group(1).replace("|r", "")
+				stash_item = re.search(f'call Preload\( "Stash{stash} Item {item_num}: (.*?)" \)', content).group(
+					1).replace("|r", "")
 				if stash_item[:2].lower() == "|c":
 					stash_item = stash_item[10:]
 				if stash_item == " ":
@@ -105,9 +112,10 @@ def get_class_names():
 
 def get_class_level_and_file(class_name):
 	# get level and file
-	class_files = os.listdir(custom_path + "\\CustomMapData\\Twilight's Eve Evo\\" + active_profile + "\\" + class_name )
+	class_files = os.listdir(custom_path + "\\CustomMapData\\Twilight's Eve Evo\\" + active_profile + "\\" + class_name)
 	for file in class_files:
-		if os.path.isdir(custom_path + "\\CustomMapData\\Twilight's Eve Evo\\" + active_profile + "\\" + class_name + "\\" + file):
+		if os.path.isdir(
+				custom_path + "\\CustomMapData\\Twilight's Eve Evo\\" + active_profile + "\\" + class_name + "\\" + file):
 			class_files.remove(file)
 			continue
 		if not file.startswith("[Level ") or not file.endswith("].txt"):
@@ -120,6 +128,7 @@ def get_class_level_and_file(class_name):
 
 
 def update_information():
+	global selected_code
 	index = 0
 	textbox.config(state=NORMAL)
 	textbox.delete(1.0, END)
@@ -127,16 +136,17 @@ def update_information():
 	for x, evo_class in enumerate(class_list):
 		if evo_class['class_name'] == selected_class:
 			index = x
+			selected_code = class_list[index]['code']
 	textbox.insert(INSERT, "Gold: " + class_list[index]['gold'] + "\n")
 	textbox.insert(INSERT, "Power Shards: " + class_list[index]['shards'] + "\n")
-	textbox.insert(INSERT, "\nCode: " + class_list[index]['code'] + "\n\n")
+	textbox.insert(INSERT, "\nCode: " + selected_code + "\n\n")
 	for x in range(0, 6):
-		textbox.insert(INSERT, f"Item {x+1}: " + class_list[index]['items'][x] + "\n")
+		textbox.insert(INSERT, f"Item {x + 1}: " + class_list[index]['items'][x] + "\n")
 	textbox.insert(INSERT, "\n")
 	for stash in range(0, 6):
 		text = ", ".join(class_list[index]['stash_items'][stash])
 		if text != "":
-			textbox.insert(INSERT, f"Stash{stash+1}: {text}\n\n")
+			textbox.insert(INSERT, f"Stash{stash + 1}: {text}\n\n")
 	textbox.config(state=DISABLED)
 
 
@@ -174,6 +184,17 @@ def load_config():
 			return loaded_active_profile, loaded_custom_path
 
 
+# Need CustomCommands.txt, each line is inputed in WC3.
+def load_custom_commands():
+	if os.path.exists("customcommands.txt"):
+		with open("customcommands.txt", "r") as f:
+			lines = f.readlines()
+			for command_lines in lines:
+				# \n char makes lines skipped if not removed.
+				stripped = command_lines.strip()
+				paste_code(stripped)
+
+
 def get_profiles():
 	path = custom_path + "\\CustomMapData\\Twilight's Eve Evo\\"
 	wc3_names_directories = []
@@ -205,11 +226,18 @@ def display_changelog():
 	changelog_window.iconbitmap(ICON)
 	changelog_textbox = Text(changelog_window)
 	changelog_textbox.place(x=0, y=0)
+	changelog_textbox.insert("end", "v1.2\n")
+	changelog_textbox.insert("end",
+							 "- Added Stargazer to the\nfilters.\n- Added CustomCommands\n- Load should be faster\n\n")
 	changelog_textbox.insert("end", "v1.1\n")
-	changelog_textbox.insert("end", "- Added Sky Sorceress and Lightbinder to the\nfilters.\n- Added stash items\n- Fixed a bug that could not read the file when\nthere was another directory\n\n")
+	changelog_textbox.insert("end",
+							 "- Added Sky Sorceress and Lightbinder to the\nfilters.\n- Added stash items\n- Fixed a bug that could not read the file when\nthere was another directory\n\n")
 	changelog_textbox.insert("end", "v1.0\n")
-	changelog_textbox.insert("end", "- Added refresh feature to update the information\n- Added change path feature\n- Added support for multiple battlenet accounts")
+	changelog_textbox.insert("end",
+							 "- Added refresh feature to update the information\n- Added change path feature\n- Added support for multiple battlenet accounts")
 	changelog_textbox.config(state=DISABLED)
+	changelog_textbox.tag_add('v1.2', '1.0', '1.end')
+	changelog_textbox.tag_config('v1.2', font='none 10 bold')
 	changelog_textbox.tag_add('v1.1', '1.0', '1.end')
 	changelog_textbox.tag_config('v1.1', font='none 10 bold')
 	changelog_textbox.tag_add('v1.0', '7.0', '7.end')
@@ -236,7 +264,7 @@ def display_about():
 # Menu
 menu_bar = Menu(root)
 config_menu = Menu(menu_bar, tearoff=0)
-config_menu.add_command(label="Set Wacraft3 path", command=change_path)
+config_menu.add_command(label="Set Warcraft3 path", command=change_path)
 config_menu.add_separator()
 config_menu.add_command(label="Close application", command=root.quit)
 menu_bar.add_cascade(label="Edit", menu=config_menu)
@@ -303,50 +331,40 @@ def refresh():
 	textbox.config(state=DISABLED)
 
 
-def paste_code():
+# Using Keyboard instead of pyautogui for faster response time. Making Sleeps obsolete
+def paste_code(pasted_item):
 	war3 = pyautogui.getWindowsWithTitle('Warcraft III')[0]
 	war3.activate()
-	pyautogui.sleep(0.5)
-	pyautogui.press('enter')
-	pyautogui.sleep(0.3)
-	pyautogui.hotkey('ctrl', 'v')
-	pyautogui.sleep(0.3)
-	pyautogui.press('enter')
+	# pyautogui.sleep(WAIT_TIMER)
+	keyboard.send('enter')
+	# pyautogui.sleep(WAIT_TIMER)
+	keyboard.write(pasted_item)
+	# pyautogui.sleep(WAIT_TIMER)
+	keyboard.send('enter')
 
 
-
-def copycode():
-	code = re.search('Code:\ (.*?)\n', textbox.get(1.0, END))
-	if code is not None:
-		if (len(code.group(1)) >= 124):
-			bcode = code.group(1)
-			lc = bcode[0:124]
-			le = bcode[124:]
-			textbox.clipboard_clear()
-			textbox.clipboard_append('-lc')
-			paste_code()
-			textbox.clipboard_clear()
-			textbox.clipboard_append(lc)
-			paste_code()
-			textbox.clipboard_clear()
-			textbox.clipboard_append(le)
-			paste_code()
-			textbox.clipboard_clear()
-			textbox.clipboard_append('-le')
-			paste_code()
-		textbox.clipboard_clear()
-		textbox.clipboard_append('-l '+ code.group(1))
-		paste_code()
-	
+def copy_code():
+	if selected_code is not None:
+		if len(selected_code) >= 124:
+			first_half = selected_code[0:124]
+			second_half = selected_code[124:]
+			paste_code('-lc')
+			paste_code(first_half)
+			paste_code(second_half)
+			paste_code('-le')
+		else:
+			paste_code('-l ' + selected_code)
+	load_custom_commands()
 
 
 # Button refresh
 button = Button(root, width=8, height=1, bd=1, text="Refresh", command=refresh)
 button.place(x=475, y=9)
 
-# Button copy code
-button2 = Button(root, width=8, height=1, bd=1, text="Copy code", command=copycode)
+# Button Load code
+button2 = Button(root, width=8, height=1, bd=1, text="Load code", command=copy_code)
 button2.place(x=400, y=9)
+
 
 # main
 def main():
@@ -369,7 +387,9 @@ def main():
 			for evo_class in class_name_list:
 				level, file = get_class_level_and_file(evo_class)
 				class_information = get_class_information(file)
-				class_list.append(dict(class_name=evo_class, level=level, gold=class_information[0], shards=class_information[1], code=class_information[2], items=class_information[3], stash_items=class_information[4]))
+				class_list.append(
+					dict(class_name=evo_class, level=level, gold=class_information[0], shards=class_information[1],
+						code=class_information[2], items=class_information[3], stash_items=class_information[4]))
 	update_gui()
 
 
