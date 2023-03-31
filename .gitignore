@@ -1,3 +1,4 @@
-
+build/
 configuration.txt
+customcommands.txt
 .idea/*

@@ -39,7 +39,6 @@ def change_path():
 	if new_path == "":
 		return
 	custom_path = new_path
-	os.remove("configuration.txt")
 	active_profile = ""
 	update_config_file()
 	refresh()
