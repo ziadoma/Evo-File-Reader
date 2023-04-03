@@ -34,7 +34,7 @@ def natural_keys(text):
 
 
 def change_path():
-	global custom_path, active_profile, custom_path, profiles, class_list, DEFAULT_PATH, selected_class
+	global custom_path, active_profile
 	new_path = filedialog.askdirectory().replace("/", "\\")
 	if new_path == "":
 		return
@@ -51,7 +51,7 @@ def update_config_file():
 		f.write(active_profile + "\n" + custom_path)
 
 
-def get_stash_items(content):
+def get_stash_items(content, file_name):
 	stash_items = []
 	for stash in ["", "2", "3", "4", "5", "6"]:
 		stash_list = []
@@ -65,7 +65,7 @@ def get_stash_items(content):
 					continue
 				stash_list.append(stash_item)
 			except:
-				print(f"Could not parse: Stash{stash} Item{item_num}")
+				print(f"{file_name}: Could not parse stash{stash} item{item_num}")
 		stash_items.append(stash_list)
 	return stash_items
 
@@ -87,7 +87,7 @@ def get_class_information(c_file):
 				if item[:3].lower() == "|cf":
 					item = item[10:]
 				items.append(item)
-			stash_items = get_stash_items(content)
+			stash_items = get_stash_items(content, c_file)
 	except:
 		print(f"Could not parse: {c_file}")
 	return list((gold, shards, load_code, items, stash_items))
@@ -157,6 +157,7 @@ def update_class_list():
 		if checkbutton_max_level_var.get() == 1 and evo_class['level'] != "300":
 			continue
 		listbox.insert(x, f"{evo_class['class_name']} [{evo_class['level']}]")
+	get_selected_list_item()
 
 
 def update_gui():
@@ -280,18 +281,33 @@ Checkbutton(root, text="Max Level", variable=checkbutton_max_level_var, command=
 Checkbutton(root, text="Tier4", variable=checkbutton_tier_4_var, command=update_class_list).place(x=100, y=10)
 
 
-def get_selected_list_item(event):
+def get_selected_list_item(event=None):
 	global selected_class
-	selection = event.widget.curselection()
-	if selection:
-		index = selection[0]
-		class_name = listbox.get(index)
-		selected_class_list = class_name.split(" ")
-		if len(selected_class_list) == 2:
-			selected_class = selected_class_list[0]
-		else:
-			selected_class = selected_class_list[0] + " " + selected_class_list[1]
-		update_information()
+	update = True
+
+	if event:
+		selection = event.widget.curselection()
+		if selection:
+			index = selection[0]
+			class_name = listbox.get(index)
+			selected_class_list = class_name.split(" ")
+			if len(selected_class_list) == 2:
+				selected_class = selected_class_list[0]
+			else:
+				selected_class = selected_class_list[0] + " " + selected_class_list[1]
+	else:
+		items = listbox.get(0, listbox.size())
+		for item in items:
+			if item[:-6] == selected_class:
+				update = False
+		if update:
+			class_name = listbox.get(0)
+			selected_class_list = class_name.split(" ")
+			if len(selected_class_list) == 2:
+				selected_class = selected_class_list[0]
+			else:
+				selected_class = selected_class_list[0] + " " + selected_class_list[1]
+	update_information()
 
 
 # Listbox
@@ -364,9 +380,8 @@ button2.place(x=400, y=9)
 
 # main
 def main():
-	global active_profile, custom_path, profiles, class_list, selected_class
+	global active_profile, custom_path, profiles, class_list
 	profiles = []
-	selected_class = ""
 	class_list = []
 	if os.path.isfile("configuration.txt"):
 		active_profile, custom_path = load_config()
