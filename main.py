@@ -325,9 +325,6 @@ combo.place(x=270, y=10)
 
 def refresh():
 	main()
-	textbox.config(state=NORMAL)
-	textbox.delete(1.0, END)
-	textbox.config(state=DISABLED)
 
 
 # Using Keyboard instead of pyautogui for faster response time. Making Sleeps obsolete
