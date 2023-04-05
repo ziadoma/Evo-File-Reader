@@ -1,0 +1,18 @@
+v1.3
+- Moved changelog
+- Added Godly craft check.
+
+v1.2
+- Added Stargazer to the filters.
+- Added CustomCommands
+- Load should be faster
+
+v1.1
+- Added Sky Sorceress and Lightbinder to the filters.
+- Added stash items
+- Fixed a bug that could not read the file when there was another directory
+
+v1.0
+- Added refresh feature to update the information
+- Added change path feature
+- Added support for multiple battlenet accounts

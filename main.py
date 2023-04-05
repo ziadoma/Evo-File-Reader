@@ -16,6 +16,7 @@ MAX_TIER = ["Annihilator", "Arch Sage", "Avenger", "Champion", "Dark Arch Templa
 			"Rune Master", "Sky Caster", "Sky Sorceress", "Sniper", "Stargazer", "Summoner", "White Wizard"]
 DEFAULT_PATH = f"C:\\Users\\{USER}\\Documents\\Warcraft III"
 WAIT_TIMER = 0
+CHANGELOG_FILE_NAME = "changelog.txt"
 
 active_profile = ""
 profiles = []
@@ -218,31 +219,18 @@ root.title(f"Evo File Reader {VERSION} by Ziadoma")
 root.iconbitmap(ICON)
 
 
-def display_changelog():
-	changelog_window = Toplevel(root)
-	changelog_window.geometry("400x250")
-	changelog_window.resizable(width=0, height=0)
-	changelog_window.title("Changelog")
-	changelog_window.iconbitmap(ICON)
-	changelog_textbox = Text(changelog_window)
-	changelog_textbox.place(x=0, y=0)
-	changelog_textbox.insert("end", "v1.2\n")
-	changelog_textbox.insert("end",
-							 "- Added Stargazer to the\nfilters.\n- Added CustomCommands\n- Load should be faster\n\n")
-	changelog_textbox.insert("end", "v1.1\n")
-	changelog_textbox.insert("end",
-							 "- Added Sky Sorceress and Lightbinder to the\nfilters.\n- Added stash items\n- Fixed a bug that could not read the file when\nthere was another directory\n\n")
-	changelog_textbox.insert("end", "v1.0\n")
-	changelog_textbox.insert("end",
-							 "- Added refresh feature to update the information\n- Added change path feature\n- Added support for multiple battlenet accounts")
-	changelog_textbox.config(state=DISABLED)
-	changelog_textbox.tag_add('v1.2', '1.0', '1.end')
-	changelog_textbox.tag_config('v1.2', font='none 10 bold')
-	changelog_textbox.tag_add('v1.1', '1.0', '1.end')
-	changelog_textbox.tag_config('v1.1', font='none 10 bold')
-	changelog_textbox.tag_add('v1.0', '7.0', '7.end')
-	changelog_textbox.tag_config('v1.0', font='none 10 bold')
+def display_godly_advancement():
+	gadv_window = Toplevel(root)
+	gadv_window.geometry("400x250")
+	gadv_window.resizable(width=0, height=0)
+	gadv_window.title("Changelog")
+	gadv_window.iconbitmap(ICON)
+	gadv_textbox = Text(gadv_window)
+	gadv_textbox.place(x=0, y=0)
+	gadv_textbox.insert("end", "v1.2\n")
 
+def display_changelog():
+	os.startfile(CHANGELOG_FILE_NAME)
 
 def display_about():
 	about_window = Toplevel(root)
@@ -255,7 +243,7 @@ def display_about():
 	about_textbox.insert("end", "Evo File Reader by Ziadoma\n")
 	about_textbox.insert("end", "This program reads Twilight Eve Evo savefiles and \ndisplays the information.\n\n"
 								"Set the path to:\n\"{Drive}\\Users\\{USER}\\Documents\\Warcraft III\"\n\n"
-								"Feel free to contact me on discord: Ziadoma#1337")
+								"Feel free to contact us on discord: Ziadoma#1337 - AlArrache#0209")
 	about_textbox.config(state=DISABLED)
 	about_textbox.tag_add('word', '1.0', '1.end')
 	about_textbox.tag_config('word', font='none 10 bold')
@@ -268,10 +256,11 @@ config_menu.add_command(label="Set Warcraft3 path", command=change_path)
 config_menu.add_separator()
 config_menu.add_command(label="Close application", command=root.quit)
 menu_bar.add_cascade(label="Edit", menu=config_menu)
-changelog_menu = Menu(menu_bar, tearoff=0)
-changelog_menu.add_command(label="Changelog", command=display_changelog)
-changelog_menu.add_command(label="About", command=display_about)
-menu_bar.add_cascade(label="Help", menu=changelog_menu)
+help_menu = Menu(menu_bar, tearoff=0)
+help_menu.add_command(label="Godly Farm Check", command=display_godly_advancement)
+help_menu.add_command(label="Changelog", command=display_changelog)
+help_menu.add_command(label="About", command=display_about)
+menu_bar.add_cascade(label="Help", menu=help_menu)
 root.config(menu=menu_bar)
 
 # Checkbutton
