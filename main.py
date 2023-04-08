@@ -269,7 +269,6 @@ checkbutton_tier_4_var = IntVar()
 Checkbutton(root, text="Max Level", variable=checkbutton_max_level_var, command=update_class_list).place(x=10, y=10)
 Checkbutton(root, text="Tier4", variable=checkbutton_tier_4_var, command=update_class_list).place(x=100, y=10)
 
-
 def get_selected_list_item(event=None):
 	global selected_class
 	update = True
@@ -279,11 +278,8 @@ def get_selected_list_item(event=None):
 		if selection:
 			index = selection[0]
 			class_name = listbox.get(index)
-			selected_class_list = class_name.split(" ")
-			if len(selected_class_list) == 2:
-				selected_class = selected_class_list[0]
-			else:
-				selected_class = selected_class_list[0] + " " + selected_class_list[1]
+			selected_class_list = class_name.split(" ")[:-1]
+			selected_class = " ".join(selected_class_list)
 	else:
 		items = listbox.get(0, listbox.size())
 		for item in items:
@@ -291,11 +287,8 @@ def get_selected_list_item(event=None):
 				update = False
 		if update:
 			class_name = listbox.get(0)
-			selected_class_list = class_name.split(" ")
-			if len(selected_class_list) == 2:
-				selected_class = selected_class_list[0]
-			else:
-				selected_class = selected_class_list[0] + " " + selected_class_list[1]
+			selected_class_list = class_name.split(" ")[:-1]
+			selected_class = " ".join(selected_class_list)
 	update_information()
 
 
