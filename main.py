@@ -269,6 +269,7 @@ checkbutton_tier_4_var = IntVar()
 Checkbutton(root, text="Max Level", variable=checkbutton_max_level_var, command=update_class_list).place(x=10, y=10)
 Checkbutton(root, text="Tier4", variable=checkbutton_tier_4_var, command=update_class_list).place(x=100, y=10)
 
+
 def get_selected_list_item(event=None):
 	global selected_class
 	update = True
