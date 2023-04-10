@@ -279,11 +279,8 @@ def get_selected_list_item(event=None):
 		if selection:
 			index = selection[0]
 			class_name = listbox.get(index)
-			selected_class_list = class_name.split(" ")
-			if len(selected_class_list) == 2:
-				selected_class = selected_class_list[0]
-			else:
-				selected_class = selected_class_list[0] + " " + selected_class_list[1]
+			selected_class_list = class_name.split(" ")[:-1]
+			selected_class = " ".join(selected_class_list)
 	else:
 		items = listbox.get(0, listbox.size())
 		for item in items:
@@ -291,11 +288,8 @@ def get_selected_list_item(event=None):
 				update = False
 		if update:
 			class_name = listbox.get(0)
-			selected_class_list = class_name.split(" ")
-			if len(selected_class_list) == 2:
-				selected_class = selected_class_list[0]
-			else:
-				selected_class = selected_class_list[0] + " " + selected_class_list[1]
+			selected_class_list = class_name.split(" ")[:-1]
+			selected_class = " ".join(selected_class_list)
 	update_information()
 
 
