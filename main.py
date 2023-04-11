@@ -5,7 +5,7 @@ from tkinter import ttk
 import pyautogui
 import keyboard
 
-VERSION = "v1.2"
+VERSION = "v1.3"
 ICON = "load.ico"
 if not os.path.isfile(ICON):
 	ICON = ""
@@ -14,6 +14,15 @@ MAX_TIER = ["Annihilator", "Arch Sage", "Avenger", "Champion", "Dark Arch Templa
 			"Grand Inquisitor", "Grand Templar", "Hierophant", "Jounin", "Lightbinder", "Light Caster",
 			"Master Stalker", "Monster Hunter", "Mystic", "Phantom Assassin", "Professional Witcher", "Prophetess",
 			"Rune Master", "Sky Caster", "Sky Sorceress", "Sniper", "Stargazer", "Summoner", "White Wizard"]
+ALL_CLASS_LIST = ["Annihilator", "Arch Sage", "Avenger", "Champion", "Dark Arch Templar", "Devil Incarnate",
+			"Grand Inquisitor", "Grand Templar", "Hierophant", "Jounin", "Lightbinder", "Light Caster",
+			"Master Stalker", "Monster Hunter", "Mystic", "Phantom Assassin", "Professional Witcher", "Prophetess",
+			"Rune Master", "Sky Caster", "Sky Sorceress", "Sniper", "Stargazer", "Summoner", "White Wizard", "Arch Druid",
+			"Swordsman", "Knight", "Crusader", "Imperial Knight", "Acolyte", "Cleric", "Priest", "Matriarch", "Initiate",
+			"Mage", "Wizard", "Sage", "Witch Hunter", "Slayer", "Witcher", "Inquisitor", "Archer", "Hunter", "Marksman",
+			"Tracker", "Druid", "Shaman", "Shapeshifter", "Thief", "Rogue", "Assassin", "Stalker", "Templar", "ArchTemplar",
+			"High Templar", "Dark Templar", "Ninja", "Genin", "Chunin", "Executioner", "Novice (Male)", "Novice (Female)",
+			"Caster", "Clairvoyant", "Sorceress", "Illuminator"]
 DEFAULT_PATH = f"C:\\Users\\{USER}\\Documents\\Warcraft III"
 WAIT_TIMER = 0
 CHANGELOG_FILE_NAME = "changelog.txt"
@@ -99,7 +108,7 @@ def get_class_names():
 	profile_path = custom_path + "\\CustomMapData\\Twilight's Eve Evo\\" + active_profile
 	try:
 		for evo_class_name in os.listdir(profile_path):
-			if os.path.isdir(os.path.join(profile_path, evo_class_name)):
+			if os.path.isdir(os.path.join(profile_path, evo_class_name)) and class_is_valid(evo_class_name):
 				class_names.append(evo_class_name)
 		# remove if the directory is empty
 		for evo_class_name in class_names:
@@ -109,6 +118,9 @@ def get_class_names():
 		print("Path is wrong")
 	return class_names
 
+def class_is_valid(class_name):
+	if class_name in ALL_CLASS_LIST: return True
+	return False
 
 def get_class_level_and_file(class_name):
 	# get level and file
@@ -227,7 +239,7 @@ def display_godly_advancement():
 	gadv_window.iconbitmap(ICON)
 	gadv_textbox = Text(gadv_window)
 	gadv_textbox.place(x=0, y=0)
-	gadv_textbox.insert("end", "v1.2\n")
+	gadv_textbox.insert("end", "Coming soon\n")
 
 def display_changelog():
 	os.startfile(CHANGELOG_FILE_NAME)
