@@ -219,7 +219,7 @@ def get_profiles():
 			print("Did not find any profiles")
 		return wc3_names_directories
 	except:
-		print("Did not find any profiles")
+		print("Except : Did not find any profiles")
 		return []
 
 
@@ -396,7 +396,7 @@ def main():
 				class_list.append(
 					dict(class_name=evo_class, level=level, gold=class_information[0], shards=class_information[1],
 						code=class_information[2], items=class_information[3], stash_items=class_information[4]))
-	update_gui()
+		update_gui()
 
 
 main()
