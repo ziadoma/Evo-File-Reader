@@ -20,7 +20,7 @@ ALL_CLASS_LIST = ["Annihilator", "Arch Sage", "Avenger", "Champion", "Dark Arch 
 			"Rune Master", "Sky Caster", "Sky Sorceress", "Sniper", "Stargazer", "Summoner", "White Wizard", "Arch Druid",
 			"Swordsman", "Knight", "Crusader", "Imperial Knight", "Acolyte", "Cleric", "Priest", "Matriarch", "Initiate",
 			"Mage", "Wizard", "Sage", "Witch Hunter", "Slayer", "Witcher", "Inquisitor", "Archer", "Hunter", "Marksman",
-			"Tracker", "Druid", "Shaman", "Shapeshifter", "Thief", "Rogue", "Assassin", "Stalker", "Templar", "ArchTemplar",
+			"Tracker", "Druid", "Shaman", "Shapeshifter", "Thief", "Rogue", "Assassin", "Stalker", "Templar", "Arch Templar",
 			"High Templar", "Dark Templar", "Ninja", "Genin", "Chunin", "Executioner", "Novice (Male)", "Novice (Female)",
 			"Caster", "Clairvoyant", "Sorceress", "Illuminator"]
 DEFAULT_PATH = f"C:\\Users\\{USER}\\Documents\\Warcraft III"
