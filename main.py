@@ -255,7 +255,7 @@ def display_about():
 	about_textbox.insert("end", "Evo File Reader by Ziadoma\n")
 	about_textbox.insert("end", "This program reads Twilight Eve Evo savefiles and \ndisplays the information.\n\n"
 								"Set the path to:\n\"{Drive}\\Users\\{USER}\\Documents\\Warcraft III\"\n\n"
-								"Feel free to contact us on discord: Ziadoma#1337 - AlArrache#0209")
+								"Feel free to contact us on discord: \n  Ziadoma#1337 - AlArrache#0209")
 	about_textbox.config(state=DISABLED)
 	about_textbox.tag_add('word', '1.0', '1.end')
 	about_textbox.tag_config('word', font='none 10 bold')
