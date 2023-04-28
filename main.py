@@ -22,7 +22,7 @@ ALL_CLASS_LIST = ["Annihilator", "Arch Sage", "Avenger", "Champion", "Dark Arch 
 			"Mage", "Wizard", "Sage", "Witch Hunter", "Slayer", "Witcher", "Inquisitor", "Archer", "Hunter", "Marksman",
 			"Tracker", "Druid", "Shaman", "Shapeshifter", "Thief", "Rogue", "Assassin", "Stalker", "Templar", "Arch Templar",
 			"High Templar", "Dark Templar", "Ninja", "Genin", "Chunin", "Executioner", "Novice (Male)", "Novice (Female)",
-			"Caster", "Clairvoyant", "Sorceress", "Illuminator"]
+			"Caster", "Clairvoyant", "Sorceress", "Illuminator", "Acolyte (M)", "Acolyte (F)"]
 DEFAULT_PATH = f"C:\\Users\\{USER}\\Documents\\Warcraft III"
 WAIT_TIMER = 0
 CHANGELOG_FILE_NAME = "changelog.txt"
