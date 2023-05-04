@@ -5,7 +5,7 @@ from tkinter import ttk
 import pyautogui
 import keyboard
 
-VERSION = "v1.3"
+VERSION = "v1.4"
 ICON = "load.ico"
 if not os.path.isfile(ICON):
 	ICON = ""
@@ -23,6 +23,54 @@ ALL_CLASS_LIST = ["Annihilator", "Arch Sage", "Avenger", "Champion", "Dark Arch 
 			"Tracker", "Druid", "Shaman", "Shapeshifter", "Thief", "Rogue", "Assassin", "Stalker", "Templar", "Arch Templar",
 			"High Templar", "Dark Templar", "Ninja", "Genin", "Chunin", "Executioner", "Novice (Male)", "Novice (Female)",
 			"Caster", "Clairvoyant", "Sorceress", "Illuminator", "Acolyte (M)", "Acolyte (F)"]
+RECIPES = {
+	"Godly": {
+		"materials": ["Twilight", "Eve"]
+	},
+	"Twilight": {
+		"materials": ["Mystery", "Draconic Trinity", "Hellish Behemoth", "Nether Reactor"]
+	},
+	"Eve": {
+		"materials": ["Blessing of Darkness", "Blessing of Dragon", "Blessing of Agony", "Nether Reactor"]
+	},
+	"Mystery": {
+		"materials": ["Mantle of Darkness", "Blessing of Darkness", "Nether Reactor"]
+	},
+	"Mystical": {
+		"materials": ["Godly Material", "Godly Material", "Godly Material", "Nether Reactor"]
+	},
+	"Draconic Trinity": {
+		"materials": ["Dragon Tooth", "Dragon Egg", "Blessing of Dragon", "Nether Reactor"]
+	},
+	"Incinerator": {
+		"materials": ["Fire Rising", "Fire Rising", "Fire Rising"]
+	},
+	"Curse of Hell": {
+		"materials": ["Incinerator", "Mystery", "Mystical", "Draconic Trinity", "Nether Reactor"]
+	},
+	"Fire Stone": {
+		"materials": ["Incinerator", "Curse of Hell", "Nether Reactor"]
+	},
+	"Crystal of Eternal Flame": {
+		"materials": ["Curse of Hell", "Fire Stone", "Nether Reactor"]
+	},
+	"Demonic Flame": {
+		"materials": ["Dragon Tooth", "Crystal of Eternal Flame"]
+	},
+	"Imp's Tail": {
+		"materials": ["Dragon Egg", "Crystal of Eternal Flame"]
+	},
+	"Blessing of Fire": {
+		"materials": ["Blessing of Dragon", "Crystal of Eternal Flame"]
+	},
+	"Hellish Behemoth": {
+		"materials": ["Demonic Flame", "Imp's Tail", "Blessing of Fire", "Nether Reactor"]
+	},
+	"Blessing of Agony": {
+		"materials": ["Essence of Nightmare", "Essence of Hell", "Fire Rising", "Agony"]
+	}
+}
+
 DEFAULT_PATH = f"C:\\Users\\{USER}\\Documents\\Warcraft III"
 WAIT_TIMER = 0
 CHANGELOG_FILE_NAME = "changelog.txt"
@@ -75,7 +123,7 @@ def get_stash_items(content, file_name):
 					continue
 				stash_list.append(stash_item)
 			except:
-				print(f"{file_name}: Could not parse stash{stash} item{item_num}")
+				pass
 		stash_items.append(stash_list)
 	return stash_items
 
@@ -118,9 +166,11 @@ def get_class_names():
 		print("Path is wrong")
 	return class_names
 
+
 def class_is_valid(class_name):
 	if class_name in ALL_CLASS_LIST: return True
 	return False
+
 
 def get_class_level_and_file(class_name):
 	# get level and file
@@ -231,18 +281,51 @@ root.title(f"Evo File Reader {VERSION} by Ziadoma")
 root.iconbitmap(ICON)
 
 
+def get_missing_items(checking_for, items, missing_items):
+	for material in RECIPES[checking_for]["materials"]:
+		if material in items:
+			items.remove(material)
+		elif material in RECIPES:
+			get_missing_items(material, items, missing_items)
+		else:
+			missing_items.append(material)
+	return missing_items
+
+
 def display_godly_advancement():
 	gadv_window = Toplevel(root)
-	gadv_window.geometry("400x250")
+	gadv_window.geometry("300x275")
 	gadv_window.resizable(width=0, height=0)
-	gadv_window.title("Changelog")
+	gadv_window.title("Godly progress")
 	gadv_window.iconbitmap(ICON)
 	gadv_textbox = Text(gadv_window)
 	gadv_textbox.place(x=0, y=0)
-	gadv_textbox.insert("end", "Coming soon\n")
+	gadv_textbox.insert("end", f"{selected_class}\n\nMissing items:\n\n")
+
+	items = []
+	for class_details in class_list:
+		if class_details["class_name"] == selected_class:
+			items = class_details["items"]
+			for stash in class_details["stash_items"]:
+				items += stash
+
+	missing_items = get_missing_items("Godly", items, [])
+
+	# replace scrap for simplification
+	for i in range(len(missing_items)):
+		if missing_items[i] in ["Mythical Weapon Piece", "Mythical Handle Piece", "Mythical Armor Piece"]:
+			missing_items[i] = "Godly Material"
+
+	missing = [[missing_items.count(i), i] for i in set(missing_items)]
+	missing.sort(reverse=True)
+	for index, missing_item in enumerate(missing):
+		gadv_textbox.insert("end", f"{missing[index][0]:<2} {missing[index][1]}\n")
+	gadv_textbox.config(state=DISABLED)
+
 
 def display_changelog():
 	os.startfile(CHANGELOG_FILE_NAME)
+
 
 def display_about():
 	about_window = Toplevel(root)

@@ -1,5 +1,4 @@
 -cm
 -cl
 -woff
--doff
--skin
+Loaded with Evo File Reader
