@@ -421,15 +421,11 @@ def refresh():
 	main()
 
 
-# Using Keyboard instead of pyautogui for faster response time. Making Sleeps obsolete
 def paste_code(pasted_item):
 	war3 = pyautogui.getWindowsWithTitle('Warcraft III')[0]
 	war3.activate()
-	# pyautogui.sleep(WAIT_TIMER)
 	keyboard.send('enter')
-	# pyautogui.sleep(WAIT_TIMER)
 	keyboard.write(pasted_item)
-	# pyautogui.sleep(WAIT_TIMER)
 	keyboard.send('enter')
 
 
