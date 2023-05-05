@@ -280,6 +280,14 @@ root.resizable(width=0, height=0)
 root.title(f"Evo File Reader {VERSION} by Ziadoma")
 root.iconbitmap(ICON)
 
+# Adding tab for items
+tabControl = ttk.Notebook(root)
+class_information_tab = ttk.Frame(tabControl)
+item_information_tab = ttk.Frame(tabControl)
+tabControl.add(class_information_tab, text='Inventory')
+tabControl.add(item_information_tab, text='Items')
+tabControl.place(x=165, y=8)
+
 
 def get_missing_items(checking_for, items, missing_items):
 	for material in RECIPES[checking_for]["materials"]:
@@ -362,7 +370,7 @@ root.config(menu=menu_bar)
 checkbutton_max_level_var = IntVar()
 checkbutton_tier_4_var = IntVar()
 Checkbutton(root, text="Max Level", variable=checkbutton_max_level_var, command=update_class_list).place(x=10, y=10)
-Checkbutton(root, text="Tier4", variable=checkbutton_tier_4_var, command=update_class_list).place(x=100, y=10)
+Checkbutton(root, text="Tier4", variable=checkbutton_tier_4_var, command=update_class_list).place(x=95, y=10)
 
 
 def get_selected_list_item(event=None):
@@ -389,18 +397,14 @@ def get_selected_list_item(event=None):
 
 
 # Listbox
-listbox = Listbox(root, width=30, height=23, selectmode=SINGLE, exportselection=False)
+listbox = Listbox(root, width=24, height=23, selectmode=SINGLE, exportselection=False)
 listbox.bind('<<ListboxSelect>>', get_selected_list_item)
 listbox.place(x=10, y=40)
 
 # Text
-textbox = Text(root, width=40, height=23)
+textbox = Text(class_information_tab, width=44, height=23)
 textbox.config(state=DISABLED)
-textbox.place(x=215, y=40)
-
-# Label
-label = Label(root, text="Profile: ")
-label.place(x=215, y=10)
+textbox.grid(row=0, column=0, padx=10, pady=10)
 
 
 def update_selected_profile(event):
@@ -412,9 +416,9 @@ def update_selected_profile(event):
 
 # Combobox
 profile_selected = StringVar()
-combo = ttk.Combobox(root, textvariable=profile_selected, state="readonly", width=14)
+combo = ttk.Combobox(root, textvariable=profile_selected, state="readonly", width=14, font="TkDefaultFont 12")
 combo.bind('<<ComboboxSelected>>', update_selected_profile)
-combo.place(x=270, y=10)
+combo.place(x=275, y=4)
 
 
 def refresh():
@@ -444,12 +448,13 @@ def copy_code():
 
 
 # Button refresh
-button = Button(root, width=8, height=1, bd=1, text="Refresh", command=refresh)
-button.place(x=475, y=9)
+refresh_icon = PhotoImage(file="assets/refresh.png")
+button = Button(root, bd=1, image=refresh_icon, command=refresh)
+button.place(x=510, y=4)
 
 # Button Load code
 button2 = Button(root, width=8, height=1, bd=1, text="Load code", command=copy_code)
-button2.place(x=400, y=9)
+button2.place(x=435, y=4)
 
 
 # main
