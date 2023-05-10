@@ -10,14 +10,14 @@ ICON = "load.ico"
 if not os.path.isfile(ICON):
 	ICON = ""
 USER = os.getlogin()
-MAX_TIER = ["Annihilator", "Arch Sage", "Avenger", "Champion", "Dark Arch Templar", "Devil Incarnate",
+MAX_TIER = ["Annihilator", "Arch Sage", "Avenger", "Champion", "Dark Arch Templar", "Demon Incarnate",
 			"Grand Inquisitor", "Grand Templar", "Hierophant", "Jounin", "Lightbinder", "Light Caster",
 			"Master Stalker", "Monster Hunter", "Mystic", "Phantom Assassin", "Professional Witcher", "Prophetess",
-			"Rune Master", "Sky Caster", "Sky Sorceress", "Sniper", "Stargazer", "Summoner", "White Wizard"]
-ALL_CLASS_LIST = ["Annihilator", "Arch Sage", "Avenger", "Champion", "Dark Arch Templar", "Devil Incarnate",
+			"Rune Master", "Sky Sorceress", "Sniper", "Stargazer", "Summoner", "White Wizard"]
+ALL_CLASS_LIST = ["Annihilator", "Arch Sage", "Avenger", "Champion", "Dark Arch Templar", "Demon Incarnate",
 			"Grand Inquisitor", "Grand Templar", "Hierophant", "Jounin", "Lightbinder", "Light Caster",
 			"Master Stalker", "Monster Hunter", "Mystic", "Phantom Assassin", "Professional Witcher", "Prophetess",
-			"Rune Master", "Sky Caster", "Sky Sorceress", "Sniper", "Stargazer", "Summoner", "White Wizard", "Arch Druid",
+			"Rune Master", "Sky Sorceress", "Sniper", "Stargazer", "Summoner", "White Wizard", "Arch Druid",
 			"Swordsman", "Knight", "Crusader", "Imperial Knight", "Acolyte", "Cleric", "Priest", "Matriarch", "Initiate",
 			"Mage", "Wizard", "Sage", "Witch Hunter", "Slayer", "Witcher", "Inquisitor", "Archer", "Hunter", "Marksman",
 			"Tracker", "Druid", "Shaman", "Shapeshifter", "Thief", "Rogue", "Assassin", "Stalker", "Templar", "Arch Templar",
