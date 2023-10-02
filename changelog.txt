@@ -1,3 +1,15 @@
+v1.6
+- Adjusted how the load commands are done. Spam should be reduced
+- Fixed no auto repick when loading short codes
+
+v1.5
+- Bugfix on the colour codes in the item list
+- Added window resize functionality
+
+v1.4
+- Godly Recipe adjustments
+- Added Valkyrie and Acolyte (F)
+
 v1.3
 - Moved changelog
 - Added Godly craft check.
