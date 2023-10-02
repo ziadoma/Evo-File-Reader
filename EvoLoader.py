@@ -86,7 +86,7 @@ selected_code = ""
 original_width = 550
 original_height = 450
 is_original_size = True
-loadcounter=0
+custom_commands_loaded = False
 
 
 def atoi(text):
@@ -469,7 +469,7 @@ def paste_code(pasted_item):
 
 
 def copy_code():
-	
+	global custom_commands_loaded
 	if selected_code is not None:
 		if len(selected_code) >= 124:
 			first_half = selected_code[0:124]
@@ -479,12 +479,14 @@ def copy_code():
 			paste_code(first_half)
 			paste_code(second_half)
 			paste_code('-le')
+			
 		else:
 			paste_code('-rp')
 			paste_code('-l ' + selected_code)
-		loadcounter+=1
-	if loadcounter<=1:
-		load_custom_commands()
+			
+	if not custom_commands_loaded:
+            load_custom_commands()
+            custom_commands_loaded = True
 	
 
 
